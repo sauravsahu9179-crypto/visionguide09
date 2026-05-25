@@ -68,17 +68,16 @@ function Index() {
           </nav>
         </aside>
 
-        <main className="flex flex-1 items-center justify-center p-8">
-          <div className="flex h-full min-h-[60vh] w-full max-w-4xl flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card/50 p-12 text-center">
-            <h2 className="text-lg font-medium">Chat window</h2>
-            <p className="mt-2 max-w-md text-sm text-muted-foreground">
-              Embed your chat interface here. Selected collection:{" "}
-              <span className="font-medium text-foreground">
-                {collections.find((c) => c.id === active)?.name}
-              </span>
-            </p>
-          </div>
+        <main className="flex-1">
+          <iframe
+            src="https://udify.app/chatbot/9LyhwWFYwMVl2Fp1"
+            style={{ width: "100%", height: "100%", minHeight: 700 }}
+            frameBorder={0}
+            allow="microphone"
+            title="My Doc Expert Chat"
+          />
         </main>
+
       </div>
     </div>
   );
