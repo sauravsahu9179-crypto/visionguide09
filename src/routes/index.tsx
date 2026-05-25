@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { FileText, FolderOpen, Plus } from "lucide-react";
+import { BookOpen, Briefcase, FileText, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
@@ -16,14 +16,14 @@ export const Route = createFileRoute("/")({
 });
 
 const collections = [
-  { id: "general", name: "General Knowledge", icon: FolderOpen },
-  { id: "research", name: "Research Papers", icon: FileText },
-  { id: "contracts", name: "Contracts", icon: FileText },
-  { id: "manuals", name: "Product Manuals", icon: FileText },
+  { id: "study", name: "Study Material", icon: BookOpen, src: "https://udify.app/chatbot/9LyhwWFYwMVl2Fp1" },
+  { id: "work", name: "Work Docs", icon: Briefcase, src: "https://udify.app/chatbot/2h7iEzcu9oMUfoYE" },
+  { id: "project", name: "Project Specs", icon: FileText, src: "https://udify.app/chatbot/FjGPVGUb0TWjY9W5" },
 ];
 
 function Index() {
   const [active, setActive] = useState(collections[0].id);
+  const activeCollection = collections.find((c) => c.id === active) ?? collections[0];
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
@@ -70,14 +70,14 @@ function Index() {
 
         <main className="flex-1">
           <iframe
-            src="https://udify.app/chatbot/9LyhwWFYwMVl2Fp1"
+            key={activeCollection.id}
+            src={activeCollection.src}
             style={{ width: "100%", height: "100%", minHeight: 700 }}
             frameBorder={0}
             allow="microphone"
-            title="My Doc Expert Chat"
+            title={`${activeCollection.name} Chat`}
           />
         </main>
-
       </div>
     </div>
   );
