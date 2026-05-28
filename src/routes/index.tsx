@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { BookOpen, Briefcase, FileText } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
 
@@ -23,19 +23,7 @@ const collections = [
     id: "study",
     name: "Study Material",
     icon: BookOpen,
-    src: "https://udify.app/chatbot/9LyhwWFYwMVl2Fp1",
-  },
-  {
-    id: "work",
-    name: "Work Docs",
-    icon: Briefcase,
-    src: "https://udify.app/chatbot/2h7iEzcu9oMUfoYE",
-  },
-  {
-    id: "project",
-    name: "Project Specs",
-    icon: FileText,
-    src: "https://udify.app/chatbot/FjGPVGUb0TWjY9W5",
+    src: "https://udify.app/chatbot/beNsakQsv0gXtyxT",
   },
 ] as const;
 
