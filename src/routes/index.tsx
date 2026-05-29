@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { BookOpen } from "lucide-react";
+import { Image as ImageIcon, Plus, Search, Clock } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
 
@@ -20,11 +20,17 @@ export const Route = createFileRoute("/")({
 
 const collections = [
   {
-    id: "study",
-    name: "Study Material",
-    icon: BookOpen,
-    src: "https://udify.app/chatbot/beNsakQsv0gXtyxT",
+    id: "ai-image-video",
+    name: "AI Image & Video Doc",
+    icon: ImageIcon,
+    src: "https://udify.app/chatbot/2fH0FZvt7QYGT8G9",
   },
+] as const;
+
+const topActions = [
+  { id: "new", name: "NEW CHAT", icon: Plus },
+  { id: "search", name: "SEARCH CHAT", icon: Search },
+  { id: "recents", name: "RECENTS", icon: Clock },
 ] as const;
 
 function Index() {
@@ -44,10 +50,25 @@ function Index() {
       </header>
 
       <div className="flex min-h-0 flex-1">
-        <aside className="hidden w-60 shrink-0 border-r border-border p-3 md:block">
-          <div className="mb-2 px-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            Collections
-          </div>
+        <aside className="hidden w-60 shrink-0 flex-col border-r border-border p-3 md:flex">
+          <nav className="flex flex-col gap-1">
+            {topActions.map((a) => {
+              const Icon = a.icon;
+              return (
+                <button
+                  key={a.id}
+                  type="button"
+                  className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium tracking-wide text-muted-foreground transition-colors hover:bg-secondary/60 hover:text-foreground"
+                >
+                  <Icon className="h-4 w-4" />
+                  <span className="truncate">{a.name}</span>
+                </button>
+              );
+            })}
+          </nav>
+
+          <div className="my-3 border-t border-border" />
+
           <nav className="flex flex-col gap-1">
             {collections.map((c) => {
               const Icon = c.icon;
@@ -78,8 +99,8 @@ function Index() {
             src={active.src}
             title={`${active.name} Chat`}
             allow="microphone"
-            className="block h-full w-full border-0"
-            style={{ minHeight: 700 }}
+            frameBorder={0}
+            style={{ width: "100%", height: "100%", minHeight: 700 }}
           />
         </main>
       </div>
