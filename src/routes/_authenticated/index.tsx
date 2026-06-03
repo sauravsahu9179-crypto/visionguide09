@@ -1,9 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Plus, Search, Clock, X, Pencil, Check } from "lucide-react";
+import { Plus, Search, Clock, X, Pencil, Check, LogOut } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/")({
   component: Index,
@@ -126,7 +127,20 @@ function Index() {
             Advisory pixel knowledge for AI image, video & digital insights.
           </p>
         </div>
-        <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            type="button"
+            onClick={async () => {
+              await supabase.auth.signOut();
+              navigate({ to: "/auth", replace: true });
+            }}
+            className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+          >
+            <LogOut className="h-3.5 w-3.5" />
+            Sign out
+          </button>
+        </div>
       </header>
 
       <div className="flex min-h-0 flex-1">
