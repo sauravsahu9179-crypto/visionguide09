@@ -49,6 +49,7 @@ export function titleFromMessage(message: string): string {
 }
 
 function Index() {
+  const navigate = useNavigate();
   const [sessionId, setSessionId] = useState<string>(() => `s-${Date.now()}`);
   const [panel, setPanel] = useState<"none" | "search" | "recents">("none");
   const [query, setQuery] = useState("");
