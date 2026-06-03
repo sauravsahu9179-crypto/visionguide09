@@ -282,7 +282,8 @@ function Index() {
             key={sessionId}
             src={CHAT_SRC}
             title="VisionGuide Chat"
-            allow="microphone"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+            referrerPolicy="no-referrer"
             frameBorder={0}
             style={{ width: "100%", height: "100%", minHeight: 700 }}
           />
