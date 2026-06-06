@@ -97,7 +97,7 @@ function AuthPage() {
             <div className="grid h-9 w-9 place-items-center rounded-xl bg-white/20 backdrop-blur">
               <Sparkles className="h-5 w-5" />
             </div>
-            <span className="text-lg font-semibold tracking-tight">VisionGuide</span>
+            <span className="tracking-tight text-xl font-bold font-serif bg-slate-300 border shadow-sm">VisionGuide</span>
           </div>
           <div>
             <h2 className="text-4xl font-bold leading-tight tracking-tight">

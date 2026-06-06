@@ -123,7 +123,7 @@ function Index() {
     <div className="flex h-screen flex-col bg-background text-foreground">
       <header className="flex shrink-0 items-center justify-between border-b border-border px-6 py-4">
         <div>
-          <h1 className="text-lg font-semibold tracking-tight">VisionGuide</h1>
+          <h1 className="tracking-tight text-xl font-bold font-serif bg-slate-300 border shadow-sm">VisionGuide</h1>
           <p className="text-xs text-muted-foreground">
             Advisory pixel knowledge for AI image, video & digital insights.
           </p>
