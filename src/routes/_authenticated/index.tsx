@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Plus, Search, Clock, X, Pencil, Check, LogOut } from "lucide-react";
+import { Plus, Search, Clock, X, Pencil, Check, LogOut, Menu } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Input } from "@/components/ui/input";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -56,6 +57,7 @@ function Index() {
   const [recents, setRecents] = useState<Recent[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingValue, setEditingValue] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setRecents(loadRecents());
@@ -122,11 +124,115 @@ function Index() {
   return (
     <div className="flex h-screen flex-col bg-background text-foreground">
       <header className="flex shrink-0 items-center justify-between border-b border-border px-6 py-4">
-        <div>
-          <h1 className="tracking-tight text-xl font-bold font-serif bg-slate-300 border shadow-sm">VisionGuide</h1>
-          <p className="text-xs text-muted-foreground">
-            Advisory pixel knowledge for AI image, video & digital insights.
-          </p>
+        <div className="flex items-center gap-2 min-w-0">
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <button
+                type="button"
+                aria-label="Open menu"
+                className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-72 p-4">
+              <SheetHeader>
+                <SheetTitle>Menu</SheetTitle>
+              </SheetHeader>
+              <nav className="mt-4 flex flex-col gap-1">
+                {topActions.map((a) => {
+                  const Icon = a.icon;
+                  return (
+                    <button
+                      key={a.id}
+                      type="button"
+                      onClick={() => {
+                        a.onClick();
+                        if (a.id === "new") setMobileMenuOpen(false);
+                      }}
+                      className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
+                    >
+                      <Icon className="h-4 w-4" />
+                      <span>{a.name}</span>
+                    </button>
+                  );
+                })}
+              </nav>
+
+              {panel !== "none" && (
+                <div className="mt-4 flex flex-col rounded-md border border-border bg-card p-2">
+                  <div className="mb-2 flex items-center justify-between px-1">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                      {panel === "search" ? "Search" : "Recents"}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setPanel("none")}
+                      className="text-muted-foreground hover:text-foreground"
+                      aria-label="Close panel"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+
+                  {panel === "search" && (
+                    <Input
+                      autoFocus
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder="Search chats by title…"
+                      className="mb-2"
+                    />
+                  )}
+
+                  <div className="max-h-72 overflow-y-auto">
+                    {(panel === "search" ? filteredRecents : recents).length === 0 ? (
+                      <p className="px-2 py-4 text-xs text-muted-foreground">
+                        No chats yet. Start a new one.
+                      </p>
+                    ) : (
+                      <ul className="flex flex-col gap-1">
+                        {(panel === "search" ? filteredRecents : recents).map((r) => (
+                          <li key={r.id}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                openRecent(r.id);
+                                setMobileMenuOpen(false);
+                              }}
+                              className={cn(
+                                "w-full truncate rounded px-2 py-1.5 text-left text-xs hover:bg-secondary/60",
+                                sessionId === r.id && "bg-secondary text-secondary-foreground",
+                              )}
+                              title={r.label}
+                            >
+                              {r.label || DEFAULT_TITLE}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+
+                  {panel === "recents" && recents.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={clearRecents}
+                      className="mt-2 text-xs text-muted-foreground hover:text-foreground"
+                    >
+                      Clear all
+                    </button>
+                  )}
+                </div>
+              )}
+            </SheetContent>
+          </Sheet>
+          <div className="min-w-0">
+            <h1 className="tracking-tight text-xl font-bold font-serif bg-slate-300 border shadow-sm">VisionGuide</h1>
+            <p className="text-xs text-muted-foreground hidden sm:block">
+              Advisory pixel knowledge for AI image, video & digital insights.
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
@@ -139,7 +245,7 @@ function Index() {
             className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
           >
             <LogOut className="h-3.5 w-3.5" />
-            Sign out
+            <span className="hidden sm:inline">Sign out</span>
           </button>
         </div>
       </header>
