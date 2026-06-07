@@ -397,18 +397,28 @@ function Index() {
           )}
         </aside>
 
-        <main className="min-w-0 flex-1">
-          <iframe
-            key={sessionId}
-            src={CHAT_SRC}
-            title="VisionGuide Chat"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-            allow="microphone; camera; clipboard-write; autoplay"
-            referrerPolicy="no-referrer"
-            frameBorder={0}
-            style={{ width: "100%", height: "100%", minHeight: 700 }}
-          />
+        <main className="relative min-w-0 flex-1">
+          {openSessions.map((id) => (
+            <iframe
+              key={id}
+              src={CHAT_SRC}
+              title={`VisionGuide Chat ${id}`}
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+              allow="microphone; camera; clipboard-write; autoplay"
+              referrerPolicy="no-referrer"
+              frameBorder={0}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                minHeight: 700,
+                visibility: id === sessionId ? "visible" : "hidden",
+              }}
+            />
+          ))}
         </main>
+
       </div>
     </div>
   );
