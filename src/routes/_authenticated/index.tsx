@@ -51,7 +51,9 @@ export function titleFromMessage(message: string): string {
 
 function Index() {
   const navigate = useNavigate();
-  const [sessionId, setSessionId] = useState<string>(() => `s-${Date.now()}`);
+  const initialId = useMemo(() => `s-${Date.now()}`, []);
+  const [sessionId, setSessionId] = useState<string>(initialId);
+  const [openSessions, setOpenSessions] = useState<string[]>([initialId]);
   const [panel, setPanel] = useState<"none" | "search" | "recents">("none");
   const [query, setQuery] = useState("");
   const [recents, setRecents] = useState<Recent[]>([]);
@@ -60,8 +62,16 @@ function Index() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    setRecents(loadRecents());
-  }, []);
+    const loaded = loadRecents();
+    // Ensure the initial session is represented in recents so users can find it later.
+    if (!loaded.some((r) => r.id === initialId)) {
+      const seeded = [{ id: initialId, label: DEFAULT_TITLE, ts: Date.now() }, ...loaded].slice(0, 20);
+      setRecents(seeded);
+      localStorage.setItem(RECENTS_KEY, JSON.stringify(seeded));
+    } else {
+      setRecents(loaded);
+    }
+  }, [initialId]);
 
   const persist = (next: Recent[]) => {
     setRecents(next);
@@ -72,14 +82,18 @@ function Index() {
     const id = `s-${Date.now()}`;
     const entry: Recent = { id, label: DEFAULT_TITLE, ts: Date.now() };
     persist([entry, ...recents].slice(0, 20));
+    setOpenSessions((prev) => (prev.includes(id) ? prev : [...prev, id]));
+    setSessionId(id);
+    setPanel("none");
+    setMobileMenuOpen(false);
+  };
+
+  const openRecent = (id: string) => {
+    setOpenSessions((prev) => (prev.includes(id) ? prev : [...prev, id]));
     setSessionId(id);
     setPanel("none");
   };
 
-  const openRecent = (id: string) => {
-    setSessionId(id);
-    setPanel("none");
-  };
 
   const clearRecents = () => {
     persist([]);
@@ -383,18 +397,28 @@ function Index() {
           )}
         </aside>
 
-        <main className="min-w-0 flex-1">
-          <iframe
-            key={sessionId}
-            src={CHAT_SRC}
-            title="VisionGuide Chat"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-            allow="microphone; camera; clipboard-write; autoplay"
-            referrerPolicy="no-referrer"
-            frameBorder={0}
-            style={{ width: "100%", height: "100%", minHeight: 700 }}
-          />
+        <main className="relative min-w-0 flex-1">
+          {openSessions.map((id) => (
+            <iframe
+              key={id}
+              src={CHAT_SRC}
+              title={`VisionGuide Chat ${id}`}
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+              allow="microphone; camera; clipboard-write; autoplay"
+              referrerPolicy="no-referrer"
+              frameBorder={0}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                minHeight: 700,
+                visibility: id === sessionId ? "visible" : "hidden",
+              }}
+            />
+          ))}
         </main>
+
       </div>
     </div>
   );
