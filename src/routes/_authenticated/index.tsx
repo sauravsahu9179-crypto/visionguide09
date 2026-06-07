@@ -389,6 +389,7 @@ function Index() {
             src={CHAT_SRC}
             title="VisionGuide Chat"
             sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+            allow="microphone; camera; clipboard-write; autoplay"
             referrerPolicy="no-referrer"
             frameBorder={0}
             style={{ width: "100%", height: "100%", minHeight: 700 }}
