@@ -23,7 +23,7 @@ function NotFoundComponent() {
         <div className="mt-6">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex cursor-pointer items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95"
           >
             Go home
           </Link>
@@ -51,7 +51,22 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
       >
         <div className="flex items-start gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-destructive/10 text-destructive">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+              <path d="M12 9v4" />
+              <path d="M12 17h.01" />
+            </svg>
           </div>
           <div className="min-w-0 flex-1">
             <h1 id="app-error-title" className="text-base font-semibold text-foreground">
@@ -69,26 +84,42 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             ) : null}
             <div className="mt-5 flex flex-wrap gap-2">
               <button
+                type="button"
                 onClick={() => {
                   if (typeof window !== "undefined") window.location.reload();
                 }}
-                className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                  <path d="M3 3v5h5" />
+                </svg>
                 Refresh page
               </button>
               <button
+                type="button"
                 onClick={() => {
                   router.invalidate();
                   reset();
                 }}
-                className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                className="inline-flex cursor-pointer items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-all hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95"
               >
                 Try again
               </button>
               <a
                 href="/"
-                className="inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="inline-flex cursor-pointer items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:text-foreground hover:bg-secondary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95"
               >
                 Go home
               </a>
@@ -104,19 +135,42 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Ask questions about AI Image and Video Generation." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Ask questions about AI Image and Video Generation." },
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover",
+      },
+      { title: "VisionGuide — Advisory Pixel Knowledge" },
+      {
+        name: "description",
+        content:
+          "Ask questions and get expert insights on AI image and video generation with VisionGuide.",
+      },
+      { name: "author", content: "VisionGuide" },
+      { property: "og:title", content: "VisionGuide — Advisory Pixel Knowledge" },
+      {
+        property: "og:description",
+        content:
+          "Ask questions and get expert insights on AI image and video generation with VisionGuide.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "Ask questions about AI Image and Video Generation." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7977c373-efcf-4560-b5ff-027756ffb196/id-preview-1f886397--c9804bd9-66df-40d2-9a5b-1e7cd431a8ab.lovable.app-1779699616999.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7977c373-efcf-4560-b5ff-027756ffb196/id-preview-1f886397--c9804bd9-66df-40d2-9a5b-1e7cd431a8ab.lovable.app-1779699616999.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@VisionGuide" },
+      { name: "twitter:title", content: "VisionGuide — Advisory Pixel Knowledge" },
+      {
+        name: "twitter:description",
+        content:
+          "Ask questions and get expert insights on AI image and video generation with VisionGuide.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7977c373-efcf-4560-b5ff-027756ffb196/id-preview-1f886397--c9804bd9-66df-40d2-9a5b-1e7cd431a8ab.lovable.app-1779699616999.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7977c373-efcf-4560-b5ff-027756ffb196/id-preview-1f886397--c9804bd9-66df-40d2-9a5b-1e7cd431a8ab.lovable.app-1779699616999.png",
+      },
     ],
     links: [
       {
